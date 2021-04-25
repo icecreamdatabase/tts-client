@@ -12,7 +12,7 @@ class SignalR {
 
     this.connection.onclose(() => this.Start())
 
-    this.connection.on("ReceiveMessage", this.OnReceiveMessage.bind(this))
+    this.connection.on("ReceiveTtsRequest", this.OnReceiveTtsRequest.bind(this))
     this.connection.on("ReceiveConnID", this.OnReceivedConnID.bind(this))
 
     //this.Start().then()
@@ -31,15 +31,16 @@ class SignalR {
     }
   }
 
-  OnReceiveMessage (message) {
-    console.log("Receive: " + message)
+  OnReceiveTtsRequest (ttsRequest) {
+    console.log("Receive:")
+    console.log(ttsRequest)
   }
 
   OnReceivedConnID (connID) {
     this.connID = connID
     console.log("ConnID: " + this.connID)
-    this.connection.invoke("Register", this.main.roomId)
-    console.log("SendMessage Invoked, on ID: " + this.connID)
+    //this.connection.invoke("Register", this.main.roomId)
+    //console.log("SendMessage Invoked, on ID: " + this.connID)
   }
 }
 
