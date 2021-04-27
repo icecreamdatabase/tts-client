@@ -3,16 +3,17 @@
 /**
  * @typedef {object} TtsRequest
  * @property {string} id
- * @property {number} volume
  * @property {number} maxMessageTime
  * @property {TtsIndividualSynthesize[]} ttsIndividualSynthesizes
  */
 
 /**
  * @typedef {object} TtsIndividualSynthesize
- * @property {number} playbackRate
  * @property {string} voiceDataWavBase64
+ * @property {number} playbackRate
+ * @property {number} volume
  */
+
 class SignalR {
 
   /**
@@ -32,8 +33,6 @@ class SignalR {
 
     this.connection.on("ReceiveTtsRequest", this.OnReceiveTtsRequest.bind(this))
     this.connection.on("ReceiveConnID", this.OnReceivedConnID.bind(this))
-
-    //this.Start().then()
   }
 
   async Start () {
@@ -50,17 +49,24 @@ class SignalR {
   }
 
   OnReceiveTtsRequest (ttsRequest) {
-    console.log("Receive:")
-    console.log(ttsRequest)
+    console.log("Receive:", ttsRequest)
 
     this.main.Tts.playMessage(ttsRequest)
   }
 
   OnReceivedConnID (connID) {
     this.connID = connID
-    console.log("ConnID: " + this.connID)
-    //this.connection.invoke("Register", this.main.roomId)
-    //console.log("SendMessage Invoked, on ID: " + this.connID)
+    console.log("ConnID:", this.connID)
+  }
+
+  ConfirmTtsFullyPlayed (id) {
+    this.connection.invoke("ConfirmTtsFullyPlayed", id)
+    console.log("Confirming tts fully played : " + id)
+  }
+
+  ConfirmTtsSkipped (id) {
+    this.connection.invoke("ConfirmTtsSkipped", id)
+    console.log("Confirming tts fully played : " + id)
   }
 }
 
