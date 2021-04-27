@@ -1,6 +1,24 @@
 "use strict"
 
+/**
+ * @typedef {object} TtsRequest
+ * @property {string} id
+ * @property {number} volume
+ * @property {number} maxMessageTime
+ * @property {TtsIndividualSynthesize[]} ttsIndividualSynthesizes
+ */
+
+/**
+ * @typedef {object} TtsIndividualSynthesize
+ * @property {number} playbackRate
+ * @property {string} voiceDataWavBase64
+ */
 class SignalR {
+
+  /**
+   *
+   * @param {Main} main
+   */
   constructor (main) {
     this.main = main
     this.connID = ""
@@ -34,6 +52,8 @@ class SignalR {
   OnReceiveTtsRequest (ttsRequest) {
     console.log("Receive:")
     console.log(ttsRequest)
+
+    this.main.Tts.playMessage(ttsRequest)
   }
 
   OnReceivedConnID (connID) {

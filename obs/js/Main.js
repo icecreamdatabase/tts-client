@@ -6,6 +6,7 @@ class Main {
 
     /* ----- BASE ----- */
     this.SignalR = new SignalR(this)
+    this.Tts = new Tts(this)
 
     /* ----- SETUP ----- */
     this.SignalR.Start().then()
