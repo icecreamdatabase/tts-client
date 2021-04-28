@@ -6,14 +6,20 @@ class Tts {
 
     /**
      *
-     * @type {TtsRequest|null}
+     * @type {TtsRequest}
      */
-    this.activeRequest = null
+    this.activeRequest = undefined
     /**
      *
      * @type {TtsIndividualSynthesize[]}
      */
     this.individualSynthQueue = []
+
+    /**
+     *
+     * @type {number}
+     */
+    this.timeoutId = undefined
 
     this.source = document.getElementById("source")
     this.player = document.getElementById("player")
@@ -25,13 +31,18 @@ class Tts {
    * @param {TtsRequest} ttsRequest
    */
   playMessage (ttsRequest) {
-    if (this.activeRequest != null) {
+    if (this.activeRequest !== undefined) {
       console.log("skipped")
       this.main.SignalR.ConfirmTtsSkipped(this.activeRequest.id)
     }
     this.activeRequest = ttsRequest
     this.individualSynthQueue = ttsRequest.ttsIndividualSynthesizes
-    //TODO: max message time skipping
+
+    clearTimeout(this.timeoutId)
+    if (this.activeRequest.maxMessageTimeSeconds > 0) {
+      this.timeoutId = setTimeout(this.skip.bind(this), this.activeRequest.maxMessageTimeSeconds * 1000)
+    }
+
     this.runIndividualSynthQueue().then()
   }
 
@@ -42,7 +53,7 @@ class Tts {
       return
     }
     this.main.SignalR.ConfirmTtsFullyPlayed(this.activeRequest.id)
-    this.activeRequest = null
+    this.activeRequest = undefined
   }
 
   onPlayerEnded () {
@@ -74,6 +85,7 @@ class Tts {
   skip () {
     console.log("Skipping current message ...")
     this.player.pause()
+    this.individualSynthQueue = []
     this.player.dispatchEvent(new Event("ended"))
   }
 }

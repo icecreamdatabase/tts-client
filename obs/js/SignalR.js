@@ -3,7 +3,7 @@
 /**
  * @typedef {object} TtsRequest
  * @property {string} id
- * @property {number} maxMessageTime
+ * @property {number} maxMessageTimeSeconds
  * @property {TtsIndividualSynthesize[]} ttsIndividualSynthesizes
  */
 
