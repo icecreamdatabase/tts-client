@@ -24,9 +24,18 @@ class SignalR {
     this.main = main
     this.connID = ""
 
-    this.connectionUrl = "http://localhost:5000/TtsHub"
+    this.minRetryDelay = 2000
+    this.maxRetryDelay = 30000
+    this.retryJitterSpread = 10000
+    this.currentRetryDelay = this.minRetryDelay
+
+    this.connectionUrl = findGetParameter("local")
+      ? 'https://localhost:5001/TtsHub'
+      : 'https://api.icdb.dev/TtsHub'
+
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(this.connectionUrl, {accessTokenFactory: () => this.main.roomId})
+      .configureLogging(signalR.LogLevel.Critical)
       .build()
 
     this.connection.onclose(() => this.Start())
@@ -36,15 +45,18 @@ class SignalR {
   }
 
   async Start () {
-    console.log("Trying to connect")
+    console.log(`SignalR trying to connect to ${this.connectionUrl}`)
     try {
       await this.connection.start()
       console.assert(this.connection.state === signalR.HubConnectionState.Connected)
-      console.log("SignalR Connected.")
+      console.log(`SignalR connected to ${this.connectionUrl}`)
+      this.currentRetryDelay = this.minRetryDelay
     } catch (err) {
       console.assert(this.connection.state === signalR.HubConnectionState.Disconnected)
-      console.log(err)
-      setTimeout(() => this.Start(), 2000)
+      let jitter = Math.floor(Math.random() * this.retryJitterSpread - this.retryJitterSpread / 2)
+      this.currentRetryDelay = Math.max(this.minRetryDelay, Math.min(this.maxRetryDelay, this.currentRetryDelay * 2) + jitter)
+      console.log(`SignalR couldn't connect to ${this.connectionUrl} \nTrying again in ${this.currentRetryDelay / 1000} s.`)
+      setTimeout(() => this.Start(), this.currentRetryDelay)
     }
   }
 
