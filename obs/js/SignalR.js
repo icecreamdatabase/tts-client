@@ -34,7 +34,7 @@ class SignalR {
       : 'https://api.icdb.dev/TtsHub'
 
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl(this.connectionUrl, {accessTokenFactory: () => this.main.roomId})
+      .withUrl(`${this.connectionUrl}?roomId=${this.main.roomId}`)//, {accessTokenFactory: () => this.main.roomId})
       .configureLogging(signalR.LogLevel.Critical)
       .build()
 
