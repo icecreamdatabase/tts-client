@@ -40,8 +40,8 @@ class SignalR {
 
     this.connection.onclose(() => this.Start())
 
-    this.connection.on("ReceiveTtsRequest", this.OnReceiveTtsRequest.bind(this))
-    this.connection.on("ReceiveConnID", this.OnReceivedConnID.bind(this))
+    this.connection.on("TtsPlayRequest", this.OnTtsPlayRequest.bind(this))
+    this.connection.on("ConnId", this.OnConnID.bind(this))
   }
 
   async Start () {
@@ -60,13 +60,13 @@ class SignalR {
     }
   }
 
-  OnReceiveTtsRequest (ttsRequest) {
+  OnTtsPlayRequest (ttsRequest) {
     console.log("Receive:", ttsRequest)
 
     this.main.Tts.playMessage(ttsRequest)
   }
 
-  OnReceivedConnID (connID) {
+  OnConnID (connID) {
     this.connID = connID
     console.log("ConnID:", this.connID)
   }
