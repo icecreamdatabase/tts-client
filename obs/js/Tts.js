@@ -75,7 +75,7 @@ class Tts {
     console.log("Playback started")
     let audioWavBase64 = `data:audio/wav;base64,${ttsIndividualSynthesize.voiceDataWavBase64}`
     this.source.setAttribute("src", audioWavBase64)
-    this.player.volume = ttsIndividualSynthesize.volume || 1.0
+    this.player.volume = Math.max(Math.min((ttsIndividualSynthesize.volume || 100.0) / 100.0, 1.0), 0.0)
     this.player.pause()
     await this.player.load()
     await this.player.play()
