@@ -41,6 +41,7 @@ class SignalR {
     this.connection.onclose(() => this.Start())
 
     this.connection.on("TtsPlayRequest", this.OnTtsPlayRequest.bind(this))
+    this.connection.on("TtsSkipCurrent", this.OnTtsSkipCurrentRequest.bind(this))
     this.connection.on("ConnId", this.OnConnID.bind(this))
   }
 
@@ -64,6 +65,12 @@ class SignalR {
     console.log("Receive:", ttsRequest)
 
     this.main.Tts.playMessage(ttsRequest)
+  }
+
+  OnTtsSkipCurrentRequest () {
+    console.log("Skipping current.")
+
+    this.main.Tts.skip()
   }
 
   OnConnID (connID) {

@@ -31,10 +31,6 @@ class Tts {
    * @param {TtsRequest} ttsRequest
    */
   playMessage (ttsRequest) {
-    if (this.activeRequest !== undefined) {
-      console.log("skipped")
-      this.main.SignalR.ConfirmTtsSkipped(this.activeRequest.id)
-    }
     this.activeRequest = ttsRequest
     this.individualSynthQueue = ttsRequest.ttsIndividualSynthesizes
 
@@ -52,8 +48,10 @@ class Tts {
       await this.playAudio(this.individualSynthQueue.shift())
       return
     }
-    this.main.SignalR.ConfirmTtsFullyPlayed(this.activeRequest.id)
-    this.activeRequest = undefined
+    if (this.activeRequest) {
+      this.main.SignalR.ConfirmTtsFullyPlayed(this.activeRequest.id)
+      this.activeRequest = undefined
+    }
   }
 
   onPlayerEnded () {
@@ -86,6 +84,11 @@ class Tts {
     console.log("Skipping current message ...")
     this.player.pause()
     this.individualSynthQueue = []
+    console.log("skipped")
+    if (this.activeRequest) {
+      this.main.SignalR.ConfirmTtsSkipped(this.activeRequest.id)
+      this.activeRequest = undefined
+    }
     this.player.dispatchEvent(new Event("ended"))
   }
 }
