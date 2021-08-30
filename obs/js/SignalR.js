@@ -80,12 +80,12 @@ class SignalR {
 
   ConfirmTtsFullyPlayed (messageId) {
     this.connection.invoke("ConfirmTtsFullyPlayed", messageId)
-    console.log("Confirming tts fully played : " + messageId)
+    console.log("Confirming tts fully played: " + messageId)
   }
 
   ConfirmTtsSkipped (messageId) {
     this.connection.invoke("ConfirmTtsSkipped", messageId)
-    console.log("Confirming tts fully played : " + messageId)
+    console.log("Confirming tts fully played: " + messageId)
   }
 }
 
