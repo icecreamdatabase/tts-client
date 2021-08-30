@@ -2,7 +2,7 @@
 
 /**
  * @typedef {object} TtsRequest
- * @property {string} id
+ * @property {string} messageId
  * @property {number} maxMessageTimeSeconds
  * @property {TtsIndividualSynthesize[]} ttsIndividualSynthesizes
  */
@@ -78,14 +78,14 @@ class SignalR {
     console.log("ConnID:", this.connID)
   }
 
-  ConfirmTtsFullyPlayed (id) {
-    this.connection.invoke("ConfirmTtsFullyPlayed", id)
-    console.log("Confirming tts fully played : " + id)
+  ConfirmTtsFullyPlayed (messageId) {
+    this.connection.invoke("ConfirmTtsFullyPlayed", messageId)
+    console.log("Confirming tts fully played : " + messageId)
   }
 
-  ConfirmTtsSkipped (id) {
-    this.connection.invoke("ConfirmTtsSkipped", id)
-    console.log("Confirming tts fully played : " + id)
+  ConfirmTtsSkipped (messageId) {
+    this.connection.invoke("ConfirmTtsSkipped", messageId)
+    console.log("Confirming tts fully played : " + messageId)
   }
 }
 
