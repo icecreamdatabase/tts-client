@@ -49,7 +49,7 @@ class Tts {
       return
     }
     if (this.activeRequest) {
-      this.main.SignalR.ConfirmTtsFullyPlayed(this.activeRequest.messageId)
+      this.main.SignalR.ConfirmTtsFullyPlayed(this.activeRequest.redemptionId)
       this.activeRequest = undefined
     }
   }
@@ -86,7 +86,7 @@ class Tts {
     this.individualSynthQueue = []
     console.log("skipped")
     if (this.activeRequest) {
-      this.main.SignalR.ConfirmTtsSkipped(this.activeRequest.messageId)
+      this.main.SignalR.ConfirmTtsSkipped(this.activeRequest.redemptionId)
       this.activeRequest = undefined
     }
     this.player.dispatchEvent(new Event("ended"))
