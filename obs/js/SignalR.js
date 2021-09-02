@@ -30,7 +30,7 @@ class SignalR {
     this.currentRetryDelay = this.minRetryDelay
 
     this.connectionUrl = findGetParameter("local")
-      ? 'https://localhost:5001/TtsHub'
+      ? 'https://apitest.icdb.dev/TtsHub'
       : 'https://api.icdb.dev/TtsHub'
 
     this.connection = new signalR.HubConnectionBuilder()
@@ -43,6 +43,7 @@ class SignalR {
     this.connection.on("TtsPlayRequest", this.OnTtsPlayRequest.bind(this))
     this.connection.on("TtsSkipCurrent", this.OnTtsSkipCurrentRequest.bind(this))
     this.connection.on("ConnId", this.OnConnID.bind(this))
+    this.connection.on("Reload", this.OnReload.bind(this))
   }
 
   async Start () {
@@ -71,6 +72,12 @@ class SignalR {
     console.log("Skipping current.")
 
     this.main.Tts.skip()
+  }
+
+  OnReload () {
+    console.log("Reloading...")
+
+    location.reload()
   }
 
   OnConnID (connID) {
