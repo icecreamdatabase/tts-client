@@ -30,8 +30,8 @@ class SignalR {
     this.currentRetryDelay = this.minRetryDelay
 
     this.connectionUrl = findGetParameter("local")
-      ? 'https://apitest.icdb.dev/TtsHub'
-      : 'https://api.icdb.dev/TtsHub'
+      ? 'https://ttsapitest.icdb.dev/TtsHub'
+      : 'https://ttsapi.icdb.dev/TtsHub'
 
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(`${this.connectionUrl}?roomId=${this.main.roomId}`)//, {accessTokenFactory: () => this.main.roomId})
