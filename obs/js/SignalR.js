@@ -1,6 +1,27 @@
 "use strict"
 
 /**
+ * @typedef {object} ValueObject
+ * @property {string} value
+ */
+
+/**
+ * @typedef {object} SpeechMark
+ * @property {number} time
+ * @property {string} type
+ * @property {?int} start
+ * @property {?int} end
+ * @property {string} value
+ */
+
+/**
+ * @typedef {object} TtsMessagePart
+ * @property {string} message
+ * @property {ValueObject} voiceId
+ * @property {ValueObject} engine
+ */
+
+/**
  * @typedef {object} TtsRequest
  * @property {string} redemptionId
  * @property {number} maxMessageTimeSeconds
@@ -10,6 +31,9 @@
 /**
  * @typedef {object} TtsIndividualSynthesize
  * @property {string} voiceDataWavBase64
+ * @property {SpeechMark[]|null} speechMarks
+ * @property {TtsMessagePart} ttsMessagePart
+ * @property {number} requestCharacters
  * @property {number} playbackRate
  * @property {number} volume
  */

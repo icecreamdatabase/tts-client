@@ -21,6 +21,12 @@ class Tts {
      */
     this.timeoutId = undefined
 
+    /**
+     *
+     * @type {number[]}
+     */
+    this.visemeTimeoutIds = []
+
     this.source = document.getElementById("source")
     this.player = document.getElementById("player")
     this.player.addEventListener("ended", this.onPlayerEnded.bind(this))
@@ -35,6 +41,7 @@ class Tts {
     this.individualSynthQueue = ttsRequest.ttsIndividualSynthesizes
 
     clearTimeout(this.timeoutId)
+    this.resetViseme()
     if (this.activeRequest.maxMessageTimeSeconds > 0) {
       this.timeoutId = setTimeout(this.skip.bind(this), this.activeRequest.maxMessageTimeSeconds * 1000)
     }
@@ -73,17 +80,40 @@ class Tts {
     console.log("Playback started")
     let audioWavBase64 = `data:audio/wav;base64,${ttsIndividualSynthesize.voiceDataWavBase64}`
     this.source.setAttribute("src", audioWavBase64)
-    this.player.volume = Math.max(Math.min((ttsIndividualSynthesize.volume || 100.0) / 100.0, 1.0), 0.0)
+    this.player.volume = Math.max(Math.min((ttsIndividualSynthesize.ttsMessagePart.volume || 100.0) / 100.0, 1.0), 0.0)
     this.player.pause()
     await this.player.load()
+
+    for (let speechMark of ttsIndividualSynthesize.speechMarks) {
+      if (speechMark.type === "viseme") {
+        this.visemeTimeoutIds.push(setTimeout(this.showViseme.bind(this, speechMark), speechMark.time))
+      }
+    }
+
     await this.player.play()
-    this.player.playbackRate = ttsIndividualSynthesize.playbackRate || 1.0
+    this.player.playbackRate = ttsIndividualSynthesize.ttsMessagePart.playbackRate || 1.0
+
+    console.log(ttsIndividualSynthesize.speechMarks)
+  }
+
+  /**
+   *
+   * @param {SpeechMark} speechMark
+   */
+  showViseme (speechMark) {
+    console.log(`Showing viseme: ${speechMark.value}`)
+  }
+
+  resetViseme () {
+    this.visemeTimeoutIds.forEach(clearTimeout)
+    console.log("Reset viseme ...")
   }
 
   skip () {
     console.log("Skipping current message ...")
     this.player.pause()
     this.individualSynthQueue = []
+    this.resetViseme()
     console.log("skipped")
     if (this.activeRequest) {
       this.main.SignalR.ConfirmTtsSkipped(this.activeRequest.redemptionId)
