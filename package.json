@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
     "eslint": "^7.25.0",
     "eslint-plugin-html": "^6.1.2",
     "eslint-plugin-standard": "^4.1.0"
