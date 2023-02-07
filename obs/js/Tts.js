@@ -90,12 +90,11 @@ class Tts {
           this.visemeTimeoutIds.push(setTimeout(this.showViseme.bind(this, speechMark), speechMark.time))
         }
       }
+      console.log(ttsIndividualSynthesize.speechMarks)
     }
 
     await this.player.play()
     this.player.playbackRate = ttsIndividualSynthesize.ttsMessagePart.playbackRate || 1.0
-
-    console.log(ttsIndividualSynthesize.speechMarks)
   }
 
   /**
