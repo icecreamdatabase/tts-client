@@ -84,9 +84,11 @@ class Tts {
     this.player.pause()
     await this.player.load()
 
-    for (let speechMark of ttsIndividualSynthesize.speechMarks) {
-      if (speechMark.type === "viseme") {
-        this.visemeTimeoutIds.push(setTimeout(this.showViseme.bind(this, speechMark), speechMark.time))
+    if (ttsIndividualSynthesize.speechMarks != null) {
+      for (let speechMark of ttsIndividualSynthesize.speechMarks) {
+        if (speechMark.type === "viseme") {
+          this.visemeTimeoutIds.push(setTimeout(this.showViseme.bind(this, speechMark), speechMark.time))
+        }
       }
     }
 
