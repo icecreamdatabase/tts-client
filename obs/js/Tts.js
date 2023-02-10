@@ -103,11 +103,13 @@ class Tts {
    */
   showViseme (speechMark) {
     console.log(`Showing viseme: ${speechMark.value}`)
+    this.main.Viseme.showViseme(speechMark)
   }
 
   resetViseme () {
     this.visemeTimeoutIds.forEach(clearTimeout)
     console.log("Reset viseme ...")
+    this.main.Viseme.hideViseme()
   }
 
   skip () {

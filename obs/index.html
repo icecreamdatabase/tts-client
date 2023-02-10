@@ -21,6 +21,16 @@
               color: #d8d4cf;
           }
       }
+      body {
+          overflow: hidden; /* Hide scrollbars */
+      }
+      img {
+          width: 100vw;
+          height: auto;
+          max-width: none;
+          max-height: 100vh;
+          object-fit: contain;
+      }
   </style>
 </head>
 <body>
@@ -28,10 +38,12 @@
 <audio id="player" controls="" style="display:none">
   <source id="source" type="audio/wav">
 </audio>
+<img id="viseme-display" src="" />
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.14/signalr.min.js"></script>
 <script src="js/Helper.js?v=0"></script>
-<script src="js/Tts.js?v=6"></script>
-<script src="js/SignalR.js?v=8"></script>
-<script src="js/Main.js?v=1"></script>
+<script src="js/Viseme.js?v=0"></script>
+<script src="js/Tts.js?v=7"></script>
+<script src="js/SignalR.js?v=9"></script>
+<script src="js/Main.js?v=2"></script>
 </html>

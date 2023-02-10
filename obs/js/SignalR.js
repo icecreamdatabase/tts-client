@@ -110,6 +110,7 @@ class SignalR {
   }
 
   ConfirmTtsFullyPlayed (redemptionId) {
+    this.main.Viseme.hideViseme()
     this.connection.invoke("ConfirmTtsFullyPlayed", redemptionId)
     console.log("Confirming tts fully played: " + redemptionId)
   }

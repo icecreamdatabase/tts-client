@@ -12,6 +12,7 @@ class Main {
     /* ----- BASE ----- */
     this.SignalR = new SignalR(this)
     this.Tts = new Tts(this)
+    this.Viseme = new Viseme(this)
 
     /* ----- SETUP ----- */
     this.SignalR.Start().then()
